@@ -12,10 +12,11 @@ export const meta = {
   imageName: 'energy_bunny',
 } satisfies AchievementMeta
 
+const rowContainsEnergyDrink = (row: Order['rows'][number]): boolean => {
+  return row.product.categoryTree.includes('Godis/Energidryck')
+}
 const orderContainsEnergyDrink = (order: Order): boolean => {
-  return !!order.rows.filter((row) => {
-    return row.product.categoryTree.includes('Godis/Energidryck')
-  }).length
+  return !!order.rows.filter(rowContainsEnergyDrink).length
 }
 
 const countEnergyDrinks = async (userId: number): Promise<number> => {
@@ -23,7 +24,7 @@ const countEnergyDrinks = async (userId: number): Promise<number> => {
     .filter(orderContainsEnergyDrink)
     .reduce<number>((userQty, order) => {
     return userQty + order.rows.reduce<number>((orderQty, row) => {
-      if (row.product.categoryTree.includes('Godis/Energidryck')) {
+      if (rowContainsEnergyDrink(row)) {
         return orderQty + row.quantity
       }
       return orderQty
@@ -47,7 +48,7 @@ export const tieredListeners = ({ tierMeta, requiredQty }: TieredListenersInput)
       // Do we already have the cheevo?
       const userCheevos = await getUserAchievements(userId)
       if (userCheevos.find((cheevo) => cheevo.id === tierMeta.id)?.achievedPercentage === 1) {
-        console.log(`➖  "${tierMeta.name}" already achieved`)
+        console.log(`☑️ "${tierMeta.name}" already achieved`)
         return
       }
 
