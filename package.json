@@ -1,5 +1,5 @@
 {
-  "name": "webhallen-eventdriven",
+  "name": "cheevo-engine",
   "version": "1.0.0",
   "description": "POC of what an eventdriven implementation of the achievement system could look like.",
   "type": "module",

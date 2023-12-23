@@ -1,5 +1,5 @@
 import { type Order, getOrderById, getOrdersByUser } from '../models/orders'
-import { type WebhallenEventListeners } from '../emitter'
+import { type EcomEventListeners } from '../emitter'
 import { type AchievementMeta, getUserAchievements } from '../models/achievement'
 
 export const meta = {
@@ -36,7 +36,7 @@ interface TieredListenersInput {
   tierMeta: AchievementMeta
   requiredAmount: number
 }
-export const tieredListeners = ({ tierMeta, requiredAmount }: TieredListenersInput): WebhallenEventListeners => {
+export const tieredListeners = ({ tierMeta, requiredAmount }: TieredListenersInput): EcomEventListeners => {
   return {
     async onShipped ({ orderId, userId }) {
       // Does the order contain something relevant for this cheevo?

@@ -2,7 +2,7 @@ import { readdir } from 'fs/promises'
 import { type OrderEvent } from './events/order'
 import { type ShippedEvent } from './events/shipped'
 
-export interface WebhallenEventListeners {
+export interface EcomEventListeners {
   onOrder?: (event: OrderEvent) => Promise<void>
   onShipped?: (event: ShippedEvent) => Promise<void>
 }
@@ -34,7 +34,7 @@ const cheevos = await readdir(achievementsDir)
 for (const cheevoFile of cheevos) {
   if (cheevoFile.startsWith('_')) continue
 
-  const cheevoListeners = (await import(`${achievementsDir}/${cheevoFile}`)).listeners as WebhallenEventListeners
+  const cheevoListeners = (await import(`${achievementsDir}/${cheevoFile}`)).listeners as EcomEventListeners
   for (const [prop, fn] of Object.entries(cheevoListeners)) {
     if (prop === 'onOrder') emitter.on('order', fn)
     if (prop === 'onShipped') emitter.on('shipped', fn)

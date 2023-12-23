@@ -1,4 +1,4 @@
-# Proof-of-concept: eventdriven WH cheevos
+# Cheevo Engine: a proof-of-concept
 
 ## Setup
 

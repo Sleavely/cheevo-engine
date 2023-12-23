@@ -1,7 +1,7 @@
 import { getCachedPromise } from './promiseCache'
 
 const {
-  WHAPI_BASE_URL = 'https://www.webhallen.com/api',
+  WHAPI_BASE_URL = '',
   WHAPI_TOKEN = '',
 } = process.env
 

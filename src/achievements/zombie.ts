@@ -1,6 +1,6 @@
 import { Temporal } from 'temporal-polyfill'
 import { type Order, getOrderById, getOrdersByUser } from '../models/orders'
-import { type WebhallenEventListeners } from '../emitter'
+import { type EcomEventListeners } from '../emitter'
 import { type AchievementMeta, getUserAchievements } from '../models/achievement'
 
 export const meta = {
@@ -55,4 +55,4 @@ export const listeners = {
       console.log(`🚧 "${meta.name}": ${totalQty / requiredQty}`)
     }
   },
-} satisfies WebhallenEventListeners
+} satisfies EcomEventListeners
