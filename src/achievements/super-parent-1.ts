@@ -19,7 +19,7 @@ const orderContainsLego = (order: Order): boolean => {
   return !!order.rows.filter(rowContainsLego).length
 }
 
-const countEnergyDrinks = async (userId: number): Promise<number> => {
+const countLegos = async (userId: number): Promise<number> => {
   return (await getOrdersByUser(userId))
     .filter(orderContainsLego)
     .reduce<number>((userQty, order) => {
@@ -53,7 +53,7 @@ export const tieredListeners = ({ tierMeta, requiredAmount }: TieredListenersInp
       }
 
       // Reduce order history
-      const orderedAmount = await countEnergyDrinks(userId)
+      const orderedAmount = await countLegos(userId)
 
       if (orderedAmount >= requiredAmount) {
         // TODO: mark as achieved
