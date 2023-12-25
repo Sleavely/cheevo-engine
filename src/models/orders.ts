@@ -77,7 +77,7 @@ interface Delivery {
   timestamp: number
 }
 
-interface OrderRow {
+export interface OrderRow {
   id: number
   locked: boolean
   unitVat: number
