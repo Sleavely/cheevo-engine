@@ -1,7 +1,7 @@
-import { getOrderById } from '../models/orders'
-import { type EcomEventListeners } from '../emitter'
-import { type AchievementMeta, getUserAchievements } from '../models/achievement'
-import { Temporal } from 'temporal-polyfill'
+import { type AchievementMeta } from '../models/achievement'
+import { type PredicateOptions } from '../reducers/rowReducers'
+import { makeListeners } from './_rowShippedListener'
+import { isWithinRecurring } from '../lib/temporal'
 
 export const meta = {
   id: 1314,
@@ -13,26 +13,17 @@ export const meta = {
   imageName: 'wololo',
 } satisfies AchievementMeta
 
-export const listeners = {
-  async onShipped ({ orderId, userId }) {
-    const order = await getOrderById(orderId)
+export const predicates = {
+  order: (order) => isWithinRecurring({
+    evaluand: order.orderDate,
+    startConstraints: { year: 1997, month: 10, day: 15 },
+    endConstraints: { month: 10, day: 15 },
+  }),
+} satisfies PredicateOptions
 
-    // placed on the right date?
-    const swedishTime = Temporal.Instant
-      .fromEpochSeconds(order.orderDate)
-      .toZonedDateTimeISO('Europe/Stockholm')
-    if (swedishTime.year < 1997) return
-    if (swedishTime.month !== 10) return
-    if (swedishTime.day !== 15) return
-
-    // Do we already have the cheevo?
-    const userCheevos = await getUserAchievements(userId)
-    if (userCheevos.find((cheevo) => cheevo.id === meta.id)?.achievedPercentage === 1) {
-      console.log(`☑️ "${meta.name}" already achieved`)
-      return
-    }
-
-    // TODO: mark as achieved
-    console.log(`✅ "${meta.name}": 1`)
-  },
-} satisfies EcomEventListeners
+export const listeners = makeListeners({
+  meta,
+  predicates,
+  counter: 'order',
+  required: 1,
+})

@@ -1,7 +1,7 @@
-import { type Order } from '../models/orders'
 import { type AchievementMeta } from '../models/achievement'
-import { isWithinRecurring } from '../lib/temporal'
+import { type PredicateOptions } from '../reducers/rowReducers'
 import { makeListeners } from './_rowShippedListener'
+import { isWithinRecurring } from '../lib/temporal'
 
 export const meta = {
   id: 12,
@@ -13,20 +13,18 @@ export const meta = {
   imageName: 'zombie',
 } satisfies AchievementMeta
 
-const isZombie = (order: Order): boolean => {
-  return isWithinRecurring({
+export const predicates = {
+  order: (order) => isWithinRecurring({
     evaluand: order.orderDate,
     startConstraints: { hour: 2 },
     endConstraints: { hour: 5 },
     inclusiveEnd: false,
-  })
-}
+  }),
+} satisfies PredicateOptions
 
 export const listeners = makeListeners({
   meta,
-  predicates: {
-    order: (order) => isZombie(order),
-  },
+  predicates,
   counter: 'order',
   required: 25,
 })
