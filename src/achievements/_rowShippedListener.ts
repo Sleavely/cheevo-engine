@@ -32,6 +32,13 @@ export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeR
         return
       }
 
+      // Dont iterate history if we only need 1 match
+      if (required === 1) {
+        // TODO: mark as achieved
+        console.log(`✅ "${meta.name}": 1`)
+        return
+      }
+
       // Reduce order history
       const allOrders = await getOrdersByUser(userId)
       const total = reduceOrders(counter, allOrders, predicates)
