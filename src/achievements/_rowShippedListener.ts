@@ -3,13 +3,13 @@ import { type AchievementMeta, userHasAchievement } from '../models/achievement'
 import { getOrderById, getOrdersByUser } from '../models/orders'
 import { type RowCounter, reduceOrder, reduceOrders, type PredicateOptions } from '../reducers/rowReducers'
 
-interface TieredListenersInput {
-  tierMeta: AchievementMeta
+interface MakeRowShippedListenersInput {
+  meta: AchievementMeta
   predicates: PredicateOptions
   counter: RowCounter
   required: number
 }
-export const tieredListeners = ({ tierMeta, predicates, counter, required }: TieredListenersInput): EcomEventListeners => {
+export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeRowShippedListenersInput): EcomEventListeners => {
   return {
     async onShipped ({ orderId, userId }) {
       // Does the order contain something relevant for this cheevo?
@@ -19,8 +19,8 @@ export const tieredListeners = ({ tierMeta, predicates, counter, required }: Tie
       }
 
       // Do we already have the cheevo?
-      if (await userHasAchievement(userId, tierMeta.id)) {
-        console.log(`☑️ "${tierMeta.name}" already achieved`)
+      if (await userHasAchievement(userId, meta.id)) {
+        console.log(`☑️ "${meta.name}" already achieved`)
         return
       }
 
@@ -30,10 +30,10 @@ export const tieredListeners = ({ tierMeta, predicates, counter, required }: Tie
 
       if (total >= required) {
         // TODO: mark as achieved
-        console.log(`✅ "${tierMeta.name}": 1`)
+        console.log(`✅ "${meta.name}": 1`)
       } else {
         // TODO: store progress
-        console.log(`🚧 "${tierMeta.name}": ${total / required}`)
+        console.log(`🚧 "${meta.name}": ${total / required}`)
       }
     },
   }
