@@ -32,14 +32,14 @@ export const getOrdersByUser = async (userId: number): Promise<Order[]> => {
 
   const remainingOrders = await Array.from(Array(firstPage.currentResultPageCount - 1))
     .reduce<Promise<Order[]>>(async (previousPromise, _, i) => {
-      const previousOrders = await previousPromise
+    const previousOrders = await previousPromise
 
-      const pageNum = i + 2
-      query.set('page', `${pageNum}`)
-      const pageRes = await apiRequestJson<GetOrdersByUserResponse>(`${basePath}/?${query.toString()}`)
+    const pageNum = i + 2
+    query.set('page', `${pageNum}`)
+    const pageRes = await apiRequestJson<GetOrdersByUserResponse>(`${basePath}/?${query.toString()}`)
 
-      return [...previousOrders, ...pageRes.orders]
-    }, Promise.resolve([]))
+    return [...previousOrders, ...pageRes.orders]
+  }, Promise.resolve([]))
 
   return [...firstPage.orders, ...remainingOrders]
 }
