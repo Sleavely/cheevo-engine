@@ -1,12 +1,18 @@
 import { type EcomEventListeners } from '../emitter'
 import { type AchievementMeta, userHasAchievement } from '../models/achievement'
 import { getOrderById, getOrdersByUser } from '../models/orders'
-import { type RowCounter, reduceOrder, reduceOrders, type PredicateOptions } from '../reducers/rowReducers'
+import {
+  type OrderCounter,
+  type RowCounter,
+  type PredicateOptions,
+  reduceOrder,
+  reduceOrders,
+} from '../reducers/rowReducers'
 
 interface MakeRowShippedListenersInput {
   meta: AchievementMeta
   predicates: PredicateOptions
-  counter: RowCounter
+  counter: RowCounter | OrderCounter
   required: number
 }
 export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeRowShippedListenersInput): EcomEventListeners => {

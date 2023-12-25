@@ -1,7 +1,7 @@
-import { Temporal } from 'temporal-polyfill'
-import { type Order, getOrderById, getOrdersByUser } from '../models/orders'
-import { type EcomEventListeners } from '../emitter'
-import { type AchievementMeta, getUserAchievements } from '../models/achievement'
+import { type Order } from '../models/orders'
+import { type AchievementMeta } from '../models/achievement'
+import { isWithinRecurring } from '../lib/temporal'
+import { makeListeners } from './_rowShippedListener'
 
 export const meta = {
   id: 12,
@@ -14,45 +14,19 @@ export const meta = {
 } satisfies AchievementMeta
 
 const isZombie = (order: Order): boolean => {
-  const hourInSweden = Temporal.Instant
-    .fromEpochSeconds(order.orderDate)
-    .toZonedDateTimeISO('Europe/Stockholm')
-    .hour
-  return (hourInSweden >= 2 && hourInSweden < 5)
+  return isWithinRecurring({
+    evaluand: order.orderDate,
+    startConstraints: { hour: 2 },
+    endConstraints: { hour: 5 },
+    inclusiveEnd: false,
+  })
 }
 
-const countZombieOrders = async (userId: number): Promise<number> => {
-  return (await getOrdersByUser(userId))
-    .filter(isZombie)
-    .length
-}
-
-const requiredQty = 25
-
-export const listeners = {
-  async onShipped ({ orderId, userId }) {
-    const purchasedOrder = await getOrderById(orderId)
-
-    if (!isZombie(purchasedOrder)) {
-      return
-    }
-
-    // Do we already have the cheevo?
-    const userCheevos = await getUserAchievements(userId)
-    if (userCheevos.find((cheevo) => cheevo.id === meta.id)?.achievedPercentage === 1) {
-      console.log(`☑️ "${meta.name}" already achieved`)
-      return
-    }
-
-    // Reduce order history
-    const totalQty = await countZombieOrders(userId)
-
-    if (totalQty >= requiredQty) {
-      // TODO: mark as achieved
-      console.log(`✅ "${meta.name}": 1`)
-    } else {
-      // TODO: store progress
-      console.log(`🚧 "${meta.name}": ${totalQty / requiredQty}`)
-    }
+export const listeners = makeListeners({
+  meta,
+  predicates: {
+    order: (order) => isZombie(order),
   },
-} satisfies EcomEventListeners
+  counter: 'order',
+  required: 25,
+})
