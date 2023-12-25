@@ -13,7 +13,7 @@ export interface Predicates {
 }
 
 export type RowCounter = 'price' | 'quantity'
-export type OrderCounter = 'order'
+export type OrderCounter = 'order' | 'store'
 
 export const reduceRow = (counter: RowCounter, row: OrderRow, predicate?: RowPredicateEvaluator): number => {
   if (predicate && !predicate(row)) {
@@ -28,7 +28,7 @@ export const reduceOrder = (counter: RowCounter | OrderCounter, order: Order, pr
   if (predicates.order && !predicates.order(order)) {
     return 0
   }
-  if (counter === 'order') {
+  if (counter === 'order' || counter === 'store') {
     if (!predicates.row) return 1
     return order.rows.some(predicates.row) ? 1 : 0
   }
@@ -38,6 +38,12 @@ export const reduceOrder = (counter: RowCounter | OrderCounter, order: Order, pr
 }
 
 export const reduceOrders = (counter: RowCounter | OrderCounter, orders: Order[], predicates: Predicates = {}): number => {
+  if (counter === 'store') {
+    return new Set(orders.reduce<number[]>((out, order) => {
+      if (order.store && reduceOrder('order', order, predicates)) out.push(order.store.id)
+      return out
+    }, [])).size
+  }
   return orders.reduce((sum, order) => {
     return sum + reduceOrder(counter, order, predicates)
   }, 0)

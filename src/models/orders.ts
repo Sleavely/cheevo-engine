@@ -62,7 +62,7 @@ export interface Order {
   isPrivateCustomer: boolean
   deliveries: Delivery[]
   rows: OrderRow[]
-  store: null
+  store: OrderStore | null
   cjEvent: null
   productKeys: unknown[]
   isExtendable: boolean
@@ -156,6 +156,21 @@ interface OrderStatusSubEntry {
 
 interface OrderStatusElement {
   id: number
+}
+
+interface OrderStore {
+  id: number
+  isPickupPoint: boolean
+  location: OrderCoordinates
+  zipCode: string
+  address: string
+  name: string
+  city: string
+}
+
+interface OrderCoordinates {
+  lat: number
+  lng: number
 }
 
 interface OrderPaymentMethod {

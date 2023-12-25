@@ -2,6 +2,16 @@ import { describe, test, expect } from 'vitest'
 import { type Order, type OrderRow } from '../models/orders'
 import { reduceOrder, reduceOrders, reduceRow } from './counters'
 
+const storeTemplate = {
+  id: 1,
+  isPickupPoint: true,
+  location: { lat: 1, lng: 1 },
+  zipCode: '15257',
+  address: 'Halldalen 1 B',
+  name: 'Anstalten Hall',
+  city: 'Södertälje',
+} satisfies Order['store']
+
 const orderTemplate = {
   id: 1337,
   orderDate: 19900107,
@@ -10,7 +20,7 @@ const orderTemplate = {
   totalSum: 30,
   reservedUntil: null,
   paymentMethod: { id: 1, name: 'Vitest Bank', isPrepayment: false, isRefundedAutomatically: false },
-  shippingAddress: { name: 'AInders', address: 'Buren', zipCode: '111 11', city: 'Stockholm' },
+  shippingAddress: { name: 'AInders', address: 'Buren', zipCode: '11111', city: 'Stockholm' },
   shippingMethod: { id: 1, name: 'Nanobot delivery', price: 5, vat: 1 },
   currency: 'SEK',
   trackingNumber: null,
@@ -21,7 +31,9 @@ const orderTemplate = {
   isPrivateCustomer: true,
   deliveries: [],
   rows: [],
-  store: null,
+  store: {
+    ...storeTemplate,
+  },
   productKeys: [],
   isExtendable: false,
   userExperiencePointBoosts: [],
@@ -130,5 +142,25 @@ describe('reduceOrders', () => {
     })
 
     expect(result).toBe(5)
+  })
+  test('can count unique stores matching a predicate', () => {
+    const orders = [
+      // will be ignored by order predicate
+      { ...orderTemplate, id: 1, rows: [{ ...rowTemplate, quantity: 1 }] },
+      // will be ignored by row predicate
+      { ...orderTemplate, id: 2, rows: [{ ...rowTemplate, id: 15, quantity: 87 }, { ...rowTemplate, id: 9, quantity: 4 }] },
+      // +1
+      { ...orderTemplate, id: 3, rows: [{ ...rowTemplate, quantity: 1 }], store: { ...storeTemplate, id: 1 } },
+      // +1
+      { ...orderTemplate, id: 4, rows: [{ ...rowTemplate, quantity: 1 }], store: { ...storeTemplate, id: 2 } },
+      // duplicate store
+      { ...orderTemplate, id: 5, rows: [{ ...rowTemplate, quantity: 1 }], store: { ...storeTemplate, id: 2 } },
+    ]
+    const uniqueStores = reduceOrders('store', orders, {
+      order: (o) => o.id > 1,
+      row: (r) => r.quantity < 10,
+    })
+
+    expect(uniqueStores).toBe(2)
   })
 })
