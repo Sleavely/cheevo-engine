@@ -143,6 +143,16 @@ describe('reduceOrders', () => {
 
     expect(result).toBe(5)
   })
+  test('can sum the total ordersums (including shipping and whatnot)', () => {
+    const orders = [
+      { ...orderTemplate, totalSum: 50000 },
+      { ...orderTemplate, totalSum: 25000 },
+    ]
+
+    const ballerProgress = reduceOrders('totalSum', orders)
+
+    expect(ballerProgress).toBe(75000)
+  })
   test('can count unique stores matching a predicate', () => {
     const orders = [
       // will be ignored by order predicate
