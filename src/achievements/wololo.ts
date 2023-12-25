@@ -1,6 +1,5 @@
 import { type AchievementMeta } from '../models/achievement'
-import { type PredicateOptions } from '../reducers/rowReducers'
-import { makeListeners } from './_rowShippedListener'
+import { type Predicates, makeListeners } from './_rowShippedListener'
 import { isWithinRecurring } from '../lib/temporal'
 
 export const meta = {
@@ -19,7 +18,7 @@ export const predicates = {
     startConstraints: { year: 1997, month: 10, day: 15 },
     endConstraints: { month: 10, day: 15 },
   }),
-} satisfies PredicateOptions
+} satisfies Predicates
 
 export const listeners = makeListeners({
   meta,

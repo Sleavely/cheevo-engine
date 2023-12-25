@@ -1,6 +1,5 @@
 import { type AchievementMeta } from '../models/achievement'
-import { type PredicateOptions } from '../reducers/rowReducers'
-import { makeListeners } from './_rowShippedListener'
+import { type Predicates, makeListeners } from './_rowShippedListener'
 
 export const meta = {
   id: 367,
@@ -14,7 +13,7 @@ export const meta = {
 
 export const predicates = {
   row: (row) => row.product.categoryTree.includes('Godis/Energidryck'),
-} satisfies PredicateOptions
+} satisfies Predicates
 
 export const listeners = makeListeners({
   meta,

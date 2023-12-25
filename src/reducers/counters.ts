@@ -4,6 +4,14 @@ type PredicateEvaluator <T = unknown> = (model: T) => boolean
 type RowPredicateEvaluator = PredicateEvaluator<OrderRow>
 type OrderPredicateEvaluator = PredicateEvaluator<Order>
 
+export interface Predicates {
+  /**
+   * When supplied, if a row does not match the predicate, its rows will not be counted
+   */
+  order?: OrderPredicateEvaluator
+  row?: RowPredicateEvaluator
+}
+
 export type RowCounter = 'price' | 'quantity'
 export type OrderCounter = 'order'
 
@@ -16,14 +24,7 @@ export const reduceRow = (counter: RowCounter, row: OrderRow, predicate?: RowPre
   throw new Error(`Invalid reducer counter supplied: "${counter as string}"`)
 }
 
-export interface PredicateOptions {
-  /**
-   * When supplied, if a row does not match the predicate, its rows will not be counted
-   */
-  order?: OrderPredicateEvaluator
-  row?: RowPredicateEvaluator
-}
-export const reduceOrder = (counter: RowCounter | OrderCounter, order: Order, predicates: PredicateOptions = {}): number => {
+export const reduceOrder = (counter: RowCounter | OrderCounter, order: Order, predicates: Predicates = {}): number => {
   if (predicates.order && !predicates.order(order)) {
     return 0
   }
@@ -36,7 +37,7 @@ export const reduceOrder = (counter: RowCounter | OrderCounter, order: Order, pr
   }, 0)
 }
 
-export const reduceOrders = (counter: RowCounter | OrderCounter, orders: Order[], predicates: PredicateOptions = {}): number => {
+export const reduceOrders = (counter: RowCounter | OrderCounter, orders: Order[], predicates: Predicates = {}): number => {
   return orders.reduce((sum, order) => {
     return sum + reduceOrder(counter, order, predicates)
   }, 0)

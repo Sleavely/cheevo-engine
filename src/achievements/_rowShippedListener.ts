@@ -4,14 +4,16 @@ import { getOrderById, getOrdersByUser } from '../models/orders'
 import {
   type OrderCounter,
   type RowCounter,
-  type PredicateOptions,
+  type Predicates,
   reduceOrder,
   reduceOrders,
-} from '../reducers/rowReducers'
+} from '../reducers/counters'
+
+export { type Predicates }
 
 interface MakeRowShippedListenersInput {
   meta: AchievementMeta
-  predicates: PredicateOptions
+  predicates: Predicates
   counter: RowCounter | OrderCounter
   required: number
 }

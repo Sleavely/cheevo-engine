@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 import { type Order, type OrderRow } from '../models/orders'
-import { reduceOrder, reduceOrders, reduceRow } from './rowReducers'
+import { reduceOrder, reduceOrders, reduceRow } from './counters'
 
 const orderTemplate = {
   id: 1337,
