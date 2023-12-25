@@ -4,6 +4,10 @@ export const getUserAchievements = async (userId: number): Promise<Achievement[]
   const res = await apiRequestJson<AchievementsResponse>(`/user/${userId}/achievements`)
   return res.achievements
 }
+export const userHasAchievement = async (userId: number, cheevoId: number): Promise<boolean> => {
+  const userCheevos = await getUserAchievements(userId)
+  return userCheevos.find((cheevo) => cheevo.id === cheevoId)?.achievedPercentage === 1
+}
 interface AchievementsResponse {
   achievements: Achievement[]
   counts: Counts
