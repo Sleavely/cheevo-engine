@@ -1,5 +1,6 @@
 import { type AchievementMeta } from '../models/achievement'
-import { tieredListeners } from './super-parent-1'
+import { tieredListeners } from './_tieredListener'
+import { predicates } from './super-parent-1'
 
 export const meta = {
   id: 491,
@@ -11,9 +12,9 @@ export const meta = {
   imageName: 'super_parent',
 } satisfies AchievementMeta
 
-const requiredAmount = 20000
-
 export const listeners = tieredListeners({
   tierMeta: meta,
-  requiredAmount,
+  predicates,
+  counter: 'price',
+  required: 20000,
 })

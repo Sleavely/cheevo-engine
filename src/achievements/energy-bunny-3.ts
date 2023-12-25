@@ -1,5 +1,6 @@
 import { type AchievementMeta } from '../models/achievement'
-import { tieredListeners } from './energy-bunny-1'
+import { tieredListeners } from './_tieredListener'
+import { predicates } from './energy-bunny-1'
 
 export const meta = {
   id: 613,
@@ -11,9 +12,9 @@ export const meta = {
   imageName: 'energy_bunny',
 } satisfies AchievementMeta
 
-const requiredQty = 100
-
 export const listeners = tieredListeners({
   tierMeta: meta,
-  requiredQty,
+  predicates,
+  counter: 'quantity',
+  required: 100,
 })
