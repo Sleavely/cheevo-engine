@@ -13,7 +13,7 @@ class CustomEmitter {
   emit (event: 'order', context: Omit<OrderEvent, 'event'>): Promise<void>
   emit (event: 'shipped', context: Omit<ShippedEvent, 'event'>): Promise<void>
   async emit (event: string, context?: object): Promise<void> {
-    console.log(`Received event "${event}"`, context, '\n')
+    console.log('\n', `Received event "${event}"`, context)
     if (this.listeners[event]) {
       await Promise.all(this.listeners[event].map(async fn => {
         await fn({ event, ...context })
