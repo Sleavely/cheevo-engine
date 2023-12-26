@@ -1,6 +1,6 @@
 import { getOrderById } from '../models/orders'
 import { type EcomEventListeners } from '../emitter'
-import { type AchievementMeta, getUserAchievements } from '../models/achievement'
+import { type AchievementMeta, getUserAchievements, saveAchievementProgress } from '../models/achievement'
 
 export const meta = {
   id: 1492,
@@ -27,7 +27,10 @@ export const listeners = {
       return
     }
 
-    // TODO: mark as achieved
-    console.log(`✅ "${meta.name}": 1`)
+    await saveAchievementProgress({
+      userId,
+      meta,
+      progress: 1,
+    })
   },
 } satisfies EcomEventListeners

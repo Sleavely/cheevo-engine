@@ -1,5 +1,5 @@
 import { type EcomEventListeners } from '../emitter'
-import { type AchievementMeta, userHasAchievement } from '../models/achievement'
+import { type AchievementMeta, userHasAchievement, saveAchievementProgress } from '../models/achievement'
 import { getOrderById, getOrdersByUser } from '../models/orders'
 import {
   type OrderCounter,
@@ -34,8 +34,11 @@ export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeR
 
       // Dont iterate history if we only need 1 match
       if (required === 1) {
-        // TODO: mark as achieved
-        console.log(`✅ "${meta.name}": 1`)
+        await saveAchievementProgress({
+          userId,
+          meta,
+          progress: 1,
+        })
         return
       }
 
@@ -43,13 +46,11 @@ export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeR
       const allOrders = await getOrdersByUser(userId)
       const total = reduceOrders(counter, allOrders, predicates)
 
-      if (total >= required) {
-        // TODO: mark as achieved
-        console.log(`✅ "${meta.name}": 1`)
-      } else {
-        // TODO: store progress
-        console.log(`🚧 "${meta.name}": ${total / required}`)
-      }
+      await saveAchievementProgress({
+        userId,
+        meta,
+        progress: total > required ? 1 : total / required,
+      })
     },
   }
 }

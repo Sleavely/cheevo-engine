@@ -8,6 +8,22 @@ export const userHasAchievement = async (userId: number, cheevoId: number): Prom
   const userCheevos = await getUserAchievements(userId)
   return userCheevos.find((cheevo) => cheevo.id === cheevoId)?.achievedPercentage === 1
 }
+
+interface SaveAchievementProgressInput {
+  userId: number
+  meta: AchievementMeta
+  progress: number
+}
+export const saveAchievementProgress = async ({ userId, meta, progress }: SaveAchievementProgressInput): Promise<void> => {
+  if (progress === 1) {
+    console.log(`✅ "${meta.name}": 1`)
+    return
+  }
+  if (progress > 0) {
+    console.log(`🚧 "${meta.name}": ${progress}`)
+  }
+}
+
 interface AchievementsResponse {
   achievements: Achievement[]
   counts: Counts
