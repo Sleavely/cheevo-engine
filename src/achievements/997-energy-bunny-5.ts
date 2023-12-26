@@ -1,20 +1,20 @@
 import { type AchievementMeta } from '../models/achievement'
 import { makeListeners } from './_rowShippedListener'
-import { predicates } from './super-parent-1'
+import { predicates } from './367-energy-bunny-1'
 
 export const meta = {
-  id: 489,
-  name: 'Super Parent Lvl 2',
-  level: 2,
+  id: 997,
+  name: 'Energy Bunny Lvl 5',
+  level: 5,
   isSecret: false,
-  description: 'Köpt Lego för 5000 kr',
+  description: 'Köpt 500 st energidrycker',
   experiencePoints: 2500,
-  imageName: 'super_parent',
+  imageName: 'energy_bunny',
 } satisfies AchievementMeta
 
 export const listeners = makeListeners({
   meta,
   predicates,
-  counter: 'price',
-  required: 5000,
+  counter: 'quantity',
+  required: 500,
 })

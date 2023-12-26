@@ -1,6 +1,6 @@
 import { type AchievementMeta } from '../models/achievement'
 import { makeListeners } from './_rowShippedListener'
-import { predicates } from './energy-bunny-1'
+import { predicates } from './367-energy-bunny-1'
 
 export const meta = {
   id: 613,
