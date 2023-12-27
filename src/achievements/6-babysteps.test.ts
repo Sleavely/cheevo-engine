@@ -3,7 +3,7 @@ import * as fixtures from '../models/orders.fixtures'
 import { saveAchievementProgress } from '../models/achievements'
 import { getOrderById, getOrdersByUser } from '../models/orders'
 
-vi.mock('../models/achievement')
+vi.mock('../models/achievements')
 vi.mock('../models/orders')
 
 // Load the file we actually want to test _after_ defining our mocks
