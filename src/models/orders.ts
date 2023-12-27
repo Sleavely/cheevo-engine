@@ -49,7 +49,7 @@ export interface Order {
   orderDate: number
   sentDate: number
   totalSum: number
-  readyDate: number
+  readyDate: number | null
   reservedUntil: null
   paymentMethod: OrderPaymentMethod
   shippingMethod: OrderShippingMethod
@@ -66,8 +66,10 @@ export interface Order {
   cjEvent: null
   productKeys: unknown[]
   isExtendable: boolean
-  shippingAddress: OrderShippingAddress
+  shippingAddress: OrderShippingAddress | null
   userExperiencePointBoosts: unknown[]
+  isBinding?: boolean
+  entries?: OrderStatusEntry[]
 }
 
 interface Delivery {
