@@ -195,3 +195,6 @@ interface OrderShippingMethod {
   price: number
   vat: number
 }
+
+export type _test_OrderStore = OrderStore
+export type _test_GetOrdersByUserResponse = GetOrdersByUserResponse
