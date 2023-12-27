@@ -9,6 +9,7 @@ describe('toZonedDateTime()', () => {
     [Temporal.ZonedDateTime.from('2023-12-24T00:00:00[Europe/Stockholm]'), christmasEve],
     ['2023-12-24', christmasEve],
     ['2023-12-24[Europe/Stockholm]', christmasEve],
+    ['2023-12-24 00:00', christmasEve],
     [1703372400, christmasEve],
     [1703372400000, christmasEve],
     ['2023-12-24T13:37:30', Temporal.ZonedDateTime.from('2023-12-24T13:37:30[Europe/Stockholm]')],
