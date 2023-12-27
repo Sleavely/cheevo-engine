@@ -34,6 +34,7 @@ const cheevos = await readdir(achievementsDir)
 let registeredCheevos = 0
 for (const cheevoFile of cheevos) {
   if (cheevoFile.startsWith('_')) continue
+  if (cheevoFile.endsWith('.test.ts')) continue
 
   const cheevoListeners = (await import(`${achievementsDir}/${cheevoFile}`)).listeners as EcomEventListeners
   for (const [prop, fn] of Object.entries(cheevoListeners)) {
