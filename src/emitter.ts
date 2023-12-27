@@ -31,6 +31,7 @@ const emitter = new CustomEmitter()
 // Register listeners
 const achievementsDir = (new URL('./achievements', import.meta.url)).pathname
 const cheevos = await readdir(achievementsDir)
+let registeredCheevos = 0
 for (const cheevoFile of cheevos) {
   if (cheevoFile.startsWith('_')) continue
 
@@ -39,6 +40,8 @@ for (const cheevoFile of cheevos) {
     if (prop === 'onOrder') emitter.on('order', fn)
     if (prop === 'onShipped') emitter.on('shipped', fn)
   }
+  registeredCheevos += 1
 }
+console.log(`🛜 ${registeredCheevos} cheevo listeners registered.`)
 
 export { emitter }
