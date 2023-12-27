@@ -1,4 +1,4 @@
-import { type AchievementMeta } from '../models/achievement'
+import { type AchievementMeta } from '../models/achievements'
 import { makeListeners } from './_rowShippedListener'
 import { predicates } from './19-super-parent-1'
 

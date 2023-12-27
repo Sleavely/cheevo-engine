@@ -1,4 +1,4 @@
-import { type AchievementMeta } from '../models/achievement'
+import { type AchievementMeta } from '../models/achievements'
 import { type Predicates, makeListeners } from './_rowShippedListener'
 import { isWithinRecurring } from '../lib/temporal'
 

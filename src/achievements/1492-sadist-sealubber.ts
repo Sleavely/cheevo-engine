@@ -1,6 +1,6 @@
 import { getOrderById } from '../models/orders'
 import { type EcomEventListeners } from '../emitter'
-import { type AchievementMeta, getUserAchievements, saveAchievementProgress } from '../models/achievement'
+import { type AchievementMeta, getUserAchievements, saveAchievementProgress } from '../models/achievements'
 
 export const meta = {
   id: 1492,

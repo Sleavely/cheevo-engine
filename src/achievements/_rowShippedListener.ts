@@ -1,5 +1,5 @@
 import { type EcomEventListeners } from '../emitter'
-import { type AchievementMeta, userHasAchievement, saveAchievementProgress } from '../models/achievement'
+import { type AchievementMeta, userHasAchievement, saveAchievementProgress } from '../models/achievements'
 import { getOrderById, getOrdersByUser } from '../models/orders'
 import {
   type OrderCounter,

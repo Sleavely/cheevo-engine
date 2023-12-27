@@ -1,6 +1,6 @@
 import { describe, beforeEach, test, expect, vi } from 'vitest'
 import * as fixtures from '../models/orders.fixtures'
-import { saveAchievementProgress } from '../models/achievement'
+import { saveAchievementProgress } from '../models/achievements'
 import { getOrderById, getOrdersByUser } from '../models/orders'
 
 vi.mock('../models/achievement')
