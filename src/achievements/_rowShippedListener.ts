@@ -17,7 +17,10 @@ interface MakeRowShippedListenersInput {
   counter: RowCounter | OrderCounter
   required: number
 }
-export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeRowShippedListenersInput): EcomEventListeners => {
+interface RowShippedListenersOutput {
+  onShipped: Required<EcomEventListeners>['onShipped']
+}
+export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeRowShippedListenersInput): RowShippedListenersOutput => {
   return {
     async onShipped ({ orderId, userId }) {
       // Does the order contain something relevant for this cheevo?
@@ -52,5 +55,5 @@ export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeR
         progress: total > required ? 1 : total / required,
       })
     },
-  }
+  } satisfies EcomEventListeners
 }
