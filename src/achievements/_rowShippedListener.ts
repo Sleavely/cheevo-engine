@@ -46,8 +46,8 @@ export const makeListeners = ({ meta, predicates, counter, required = 1 }: MakeR
       }
 
       // Reduce order history
-      const allOrders = await getOrdersByUser(userId)
-      const total = reduceOrders(counter, allOrders, predicates)
+      const total = await getOrdersByUser(userId)
+        .then(allOrders => reduceOrders(counter, allOrders, predicates))
 
       await saveAchievementProgress({
         userId,
