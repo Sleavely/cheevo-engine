@@ -19,16 +19,14 @@ export const listeners = makeListeners({
   async reduceOrders (orders) {
     return await orders.reduce<Promise<number>>(async (totalSum, order) => {
       if (this.orderMatching(order)) {
-        return (await totalSum) + (
-          await order.rows.reduce<Promise<number>>(async (orderSum, row) => {
-            const meterMatches = row.product.name.match(/([0-9]+)m/)
-            if (row.product.categoryTree.includes('Nätverkskabel') && meterMatches) {
-              const rowProductLength = (parseInt(meterMatches[1], 10) * row.quantity)
-              return (await orderSum) + rowProductLength
-            }
-            return await orderSum
-          }, Promise.resolve(0))
-        )
+        return await order.rows.reduce<Promise<number>>(async (orderSum, row) => {
+          const meterMatches = row.product.name.match(/([0-9]+)m/)
+          if (row.product.categoryTree.includes('Nätverkskabel') && meterMatches) {
+            const rowProductLength = (parseInt(meterMatches[1], 10) * row.quantity)
+            return (await orderSum) + rowProductLength
+          }
+          return await orderSum
+        }, totalSum)
       }
       return await totalSum
     }, Promise.resolve(0))
