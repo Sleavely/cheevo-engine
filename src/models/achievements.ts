@@ -20,7 +20,7 @@ export const saveAchievementProgress = async ({ userId, meta, progress }: SaveAc
     return
   }
   if (progress > 0) {
-    console.log(`🚧 "${meta.name}": ${progress}`)
+    console.log(`🚧 "${meta.name}": ${progress.toFixed(2)}`)
   }
 }
 
