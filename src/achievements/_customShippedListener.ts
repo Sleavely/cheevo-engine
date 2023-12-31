@@ -5,7 +5,7 @@ import { type Order, getOrderById, getOrdersByUser } from '../models/orders'
 interface MakeCustomShippedListenersInput {
   meta: AchievementMeta
   orderMatching: (order: Order) => boolean
-  reduceOrders: (orders: Order[]) => Promise<number>
+  reduceOrders: (orders: Order[]) => Promise<number> | number
   required: number
 }
 
