@@ -37,6 +37,10 @@ for (const cheevoFile of cheevos) {
   if (cheevoFile.endsWith('.test.ts')) continue
 
   const cheevoListeners = (await import(`${achievementsDir}/${cheevoFile}`)).listeners as EcomEventListeners
+
+  // Ignore files that dont export listeners
+  if (!cheevoListeners) continue
+
   for (const [prop, fn] of Object.entries(cheevoListeners)) {
     if (prop === 'onOrder') emitter.on('order', fn)
     if (prop === 'onShipped') emitter.on('shipped', fn)
